@@ -99,7 +99,7 @@ export default class MyRoutines extends React.Component {
                     <div key={k}>
                       <Divider/> {/* insert onTapTouch for ListItem */}
                       <ListItem primaryText={task} rightIcon={< Link params = {{ name: routine.name }}to = {
-                        `/tasks/${task.name}`
+                        `/tasks/${task}`
                       } > <Launch/> < /Link>}></ListItem>
                     </div>
                   );

@@ -6,6 +6,8 @@ import Divider from 'material-ui/Divider';
 import Launch from 'material-ui/svg-icons/action/launch';
 import IconButton from 'material-ui/IconButton';
 import Checkbox from 'material-ui/Checkbox';
+import Toggle from 'material-ui/Toggle';
+import * as Colors from 'material-ui/styles/colors';
 
 import RoutineStore from '../../flux/stores/routine-store';
 import TaskStore from '../../flux/stores/task-store';
@@ -77,11 +79,25 @@ export default class Routine extends React.Component {
   }
 
   handleTaskEdit(oldTask, event) {
-    this.state.currentRoutine.tasks[this.state.currentRoutine.tasks.indexOf(oldTask)] = event.task;
+    console.log('old:', oldTask);
+    console.log('NEW:', event);
+    this.state.currentRoutine.tasks[this.state.currentRoutine.tasks.indexOf(oldTask)] = event.newTask;
   }
 
   handleNameEdit(event) {
     this.state.currentRoutine.name = event.newName;
+  }
+
+  handleToggle(day) {
+    console.log(day, 'before toggle:', this.state.currentRoutine.repeat[day]);
+    this.setState({
+      currentRoutine: {
+        repeat: {
+          [day]: !!this.state.currentRoutine.repeat[day]
+        }
+      }
+    });
+    console.log(day, 'after toggle:', this.state.currentRoutine.repeat[day]);
   }
 
   handleSubmit() {
@@ -97,78 +113,118 @@ export default class Routine extends React.Component {
       data: JSON.stringify(this.state.currentRoutine),
       dataType: "json",
       contentType: "application/json",
-      success: function(res, err){
-        console.log('Put Res:', res, 'err', err);
+      success: function(err, res){
+        if (err) {
+          console.log(err);
+        }
       }
     });
   }
 
   render() {
     const paperStyle = {
-      height: 600,
-      width: 600,
-      margin: 20,
+      height: 850,
+      width: 750,
+      margin: 35,
       overflow: 'auto'
+    };
+    const innerPaperStyle = {
+      width: 700,
+      margin: 35,
+      overflow: 'hidden'
     };
     const centerPaper = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
     };
-    const launchTask = (
-      <IconButton>
-        <Launch />
-      </IconButton>
-    );
+    const listStyle = {
+      maxWidth: 650,
+      alignItems: 'center',
+      justifyContent: 'center'
+    };
+    const titleStyle = {
+      fontSize: 32,
+      colors: Colors.white
+    };
+    const taskStyle = {
+      fontSize: 18,
+    };
 
     return (
       <div>
         <RoutineNav />
         <div style={centerPaper}>
           <div>
-            <Paper style={paperStyle} zDepth={4}>
-              {this.findCurrentRoutine().map((routine) => {
-                return (
-                  <List>
-                    <Toolbar >
-                      <ToolbarGroup firstChild={true}>
-                        <InlineEdit text={routine.name} paramName="newName" change={this.handleNameEdit.bind(this)}></InlineEdit>
-                      </ToolbarGroup>
-                    </Toolbar>
-                  {routine.tasks.map((task) => {
+            {this.findCurrentRoutine().map((routine) => {
+              return (
+                <Paper style={paperStyle} zDepth={4}>
+                  <Toolbar >
+                    <ToolbarGroup firstChild={true}>
+                      <InlineEdit style={titleStyle} text={routine.name} paramName="newName" change={this.handleNameEdit.bind(this)}></InlineEdit>
+                    </ToolbarGroup>
+                  </Toolbar>
+                  <div style={innerPaperStyle}>
+                    <div style={{fontSize: 20 + 'px'}}>
+                      Repeat On:
+                    </div>
+                    <div className="day-quickview text-justify">
+                      <span className={routine.repeat['Sunday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>SUN </span>
+                      <span className={routine.repeat['Monday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>MON </span>
+                      <span className={routine.repeat['Tuesday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>TUE </span>
+                      <span className={routine.repeat['Wednesday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>WED </span>
+                      <span className={routine.repeat['Thursday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>THUR </span>
+                      <span className={routine.repeat['Friday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>FRI </span>
+                      <span className={routine.repeat['Saturday']
+                        ? 'day-view-on'
+                        : 'day-view-off'}>SAT </span>
+                    </div>
+                    <Divider/>
+                    <List title="Tasks" style={listStyle}>
+                    {routine.tasks.map((task) => {
                       return (
-                        <div key={routine.tasks.indexOf(task)}>
-                          <Divider />
-                          <InlineEdit text={task} change={this.handleTaskEdit.bind(this, task)}></InlineEdit>
-                          <IconButton onClick={this.removeTask.bind(this, task)}
-                                      tooltip="Remove Task">
-                            <Delete />
-                          </IconButton>
-                        </div>
+                        <ListItem key={routine.tasks.indexOf(task)} rightIcon={<IconButton onClick={this.removeTask.bind(this, task)} tooltip="Remove Task"><Delete /></IconButton>}>
+                          <InlineEdit text={task} paramName="newTask" style={taskStyle} change={this.handleTaskEdit.bind(this, task)}></InlineEdit>
+                        </ListItem>
                       );
                     })}
-                  </List>
-                );
-              })}
-              <TextField
-                type="text"
-                hintText="ex. 5 sun salutes"
-                onChange={this.handleChange.bind(this, 'task')}
-              />
-              <IconButton tooltip="Add Task" onClick={this.handleTaskChange.bind(this)}><AddCircle /></IconButton>
-              <div>
-                <Link to='/'>
-                  <RaisedButton
-                    label="Update Routine"
-                    labelPosition="before"
-                    primary={true}
-                    icon={<Refresh />}
-                    onClick={this.handleSubmit.bind(this)}
-                    Link to='/'
-                  />
-                </Link>
-              </div>
-            </Paper>
+                    </List>
+                    <div>
+                      <TextField
+                        type="text"
+                        floatingLabelText="Anything else you need to do?"
+                        onChange={this.handleChange.bind(this, 'task')}
+                        />
+                      <IconButton tooltip="Add Task" onClick={this.handleTaskChange.bind(this)}><AddCircle /></IconButton>
+                    </div>
+                    <div>
+                      <Link to='/'>
+                        <RaisedButton
+                          label="Update Routine"
+                          labelPosition="before"
+                          primary={true}
+                          icon={<Refresh />}
+                          onClick={this.handleSubmit.bind(this)}
+                          Link to='/'
+                          />
+                      </Link>
+                    </div>
+                  </div>
+                </Paper>
+              );
+            })}
           </div>
         </div>
       </div>
