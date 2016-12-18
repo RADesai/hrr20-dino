@@ -123,7 +123,7 @@ export default class Routine extends React.Component {
 
   render() {
     const paperStyle = {
-      height: 850,
+      height: 750,
       width: 750,
       margin: 35,
       overflow: 'auto'
@@ -165,9 +165,6 @@ export default class Routine extends React.Component {
                     </ToolbarGroup>
                   </Toolbar>
                   <div style={innerPaperStyle}>
-                    <div style={{fontSize: 20 + 'px'}}>
-                      Repeat On:
-                    </div>
                     <div className="day-quickview text-justify">
                       <span className={routine.repeat['Sunday']
                         ? 'day-view-on'
@@ -205,6 +202,7 @@ export default class Routine extends React.Component {
                       <TextField
                         type="text"
                         floatingLabelText="Anything else you need to do?"
+                        hintText="Add to your routine here"
                         onChange={this.handleChange.bind(this, 'task')}
                         />
                       <IconButton tooltip="Add Task" onClick={this.handleTaskChange.bind(this)}><AddCircle /></IconButton>
