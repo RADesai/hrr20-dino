@@ -23,6 +23,7 @@ import TextField from 'material-ui/TextField';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class Routine extends React.Component {
   constructor(props) {
@@ -79,8 +80,6 @@ export default class Routine extends React.Component {
   }
 
   handleTaskEdit(oldTask, event) {
-    console.log('old:', oldTask);
-    console.log('NEW:', event);
     this.state.currentRoutine.tasks[this.state.currentRoutine.tasks.indexOf(oldTask)] = event.newTask;
   }
 
@@ -89,15 +88,14 @@ export default class Routine extends React.Component {
   }
 
   handleToggle(day) {
-    console.log(day, 'before toggle:', this.state.currentRoutine.repeat[day]);
-    this.setState({
-      currentRoutine: {
-        repeat: {
-          [day]: !!this.state.currentRoutine.repeat[day]
-        }
-      }
-    });
-    console.log(day, 'after toggle:', this.state.currentRoutine.repeat[day]);
+    // this.setState({
+    //   currentRoutine: {
+    //     repeat: {
+    //       [day]: !!this.state.currentRoutine.repeat[day]
+    //     }
+    //   }
+    // });
+    this.state.currentRoutine.repeat[day] = !this.state.currentRoutine.repeat[day]
   }
 
   handleSubmit() {
@@ -166,27 +164,13 @@ export default class Routine extends React.Component {
                   </Toolbar>
                   <div style={innerPaperStyle}>
                     <div className="day-quickview text-justify">
-                      <span className={routine.repeat['Sunday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>SUN </span>
-                      <span className={routine.repeat['Monday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>MON </span>
-                      <span className={routine.repeat['Tuesday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>TUE </span>
-                      <span className={routine.repeat['Wednesday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>WED </span>
-                      <span className={routine.repeat['Thursday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>THUR </span>
-                      <span className={routine.repeat['Friday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>FRI </span>
-                      <span className={routine.repeat['Saturday']
-                        ? 'day-view-on'
-                        : 'day-view-off'}>SAT </span>
+                      <FlatButton label="SUN" onClick={this.handleToggle.bind(this, 'Sunday')} secondary={!this.state.currentRoutine.repeat['Sunday']} />
+                      <FlatButton label="MON" onClick={this.handleToggle.bind(this, 'Monday')} secondary={!this.state.currentRoutine.repeat['Monday']}  />
+                      <FlatButton label="TUE" onClick={this.handleToggle.bind(this, 'Tuesday')} secondary={!this.state.currentRoutine.repeat['Tuesday']}  />
+                      <FlatButton label="WED" onClick={this.handleToggle.bind(this, 'Wednesday')} secondary={!this.state.currentRoutine.repeat['Wednesday']}  />
+                      <FlatButton label="THUR" onClick={this.handleToggle.bind(this, 'Thursday')} secondary={!this.state.currentRoutine.repeat['Thursday']}  />
+                      <FlatButton label="FRI" onClick={this.handleToggle.bind(this, 'Friday')} secondary={!this.state.currentRoutine.repeat['Friday']}  />
+                      <FlatButton label="SAT" onClick={this.handleToggle.bind(this, 'Saturday')} secondary={!this.state.currentRoutine.repeat['Saturday']}  />
                     </div>
                     <Divider/>
                     <List title="Tasks" style={listStyle}>
