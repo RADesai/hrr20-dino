@@ -88,13 +88,13 @@ export default class Routine extends React.Component {
   }
 
   handleToggle(day) {
-    // this.setState({
-    //   currentRoutine: {
-    //     repeat: {
-    //       [day]: !!this.state.currentRoutine.repeat[day]
-    //     }
-    //   }
-    // });
+    this.setState({
+      currentRoutine: {
+        repeat: {
+          [day]: !!this.state.currentRoutine.repeat[day]
+        }
+      }
+    });
     this.state.currentRoutine.repeat[day] = !this.state.currentRoutine.repeat[day]
   }
 
