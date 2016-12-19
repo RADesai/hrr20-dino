@@ -82,9 +82,8 @@ export default class MyRoutinesNav extends React.Component {
           </ToolbarGroup>
           <ToolbarGroup lastChild={true}>
             {/* insert onClick/onTapTouch to ArrowBack */}
-            <ArrowBack/>
-            <div style={titleStyle}>My Routines
-            </div>
+            <ToolbarTitle style={titleStyle} text="My Routines" />
+            <ToolbarSeparator />
             <Link to='/create-routine'>
               <RaisedButton label="Create routine" labelPosition="before" primary={true} icon={< AddCircleOutline />}/>
             </Link>

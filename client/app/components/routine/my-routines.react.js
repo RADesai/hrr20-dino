@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import Checkbox from 'material-ui/Checkbox';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import {Link} from 'react-router';
+import Create from 'material-ui/svg-icons/content/create';
 
 import data from '../../utils/api-utils';
 
@@ -67,7 +68,7 @@ export default class MyRoutines extends React.Component {
                 this.handleRemoveRoutine.bind(this, routine._id)
               } > <NavigationClose/> < /IconButton>} iconElementRight={< Link params = {{ id: routine._id }}to = {
                 `/routines/${routine._id}`
-              } > <IconButton><Launch/></IconButton> < /Link>}/>
+              } > <IconButton><Create/></IconButton> < /Link>}/>
               <div className="day-quickview text-justify">
                 <span className={routine.repeat['Sunday']
                   ? 'day-view-on'
