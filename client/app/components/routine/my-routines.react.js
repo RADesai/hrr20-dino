@@ -67,7 +67,7 @@ export default class MyRoutines extends React.Component {
               }} iconElementLeft={< IconButton onClick = {
                 this.handleRemoveRoutine.bind(this, routine._id)
               } > <NavigationClose/> < /IconButton>} iconElementRight={< Link params = {{ id: routine._id }}to = {
-                `/routines/${routine._id}`
+                `/edit-routine/${routine._id}`
               } > <IconButton><Create/></IconButton> < /Link>}/>
               <div className="day-quickview text-justify">
                 <span className={routine.repeat['Sunday']

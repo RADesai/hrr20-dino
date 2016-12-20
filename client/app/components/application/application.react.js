@@ -5,6 +5,7 @@ import PreAuthNav from '../routine/pre-auth-nav.react';
 
 import Routine from '../routine/routine.react';
 import CreateRoutine from '../routine/create-routine.react';
+import EditRoutine from '../routine/edit-routine.react';
 import MyRoutines from '../routine/my-routines.react';
 import Task from '../task/task.react';
 import CreateTask from '../task/create-task.react';
@@ -73,6 +74,10 @@ export default class Application extends React.Component {
                    onEnter = {this.checkAuthenticate.bind(this)}/>
             <Route  path='/create-routine'
                     component={CreateRoutine}
+                    onEnter = {this.checkAuthenticate.bind(this)}>
+            </Route>
+            <Route  path='/edit-routine/:id'
+                    component={EditRoutine}
                     onEnter = {this.checkAuthenticate.bind(this)}>
             </Route>
             <Route  path='/create-task'
